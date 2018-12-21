@@ -7,7 +7,7 @@
         <!-- EMAIL -->
         <b-row class="input-field">
           <b-col sm="3"><label for="form-email">Email</label></b-col>
-          <b-col sm="9"><b-form-input type="email" id="form-email" v-model="email" placeholder=""/>
+          <b-col sm="9"><b-form-input type="email" :state="isEmailValid" id="form-email" v-model="email" @input.native="checkEmail" @blur.native="onblurEmail"/>
           </b-col>
         </b-row>
 
@@ -15,7 +15,7 @@
         <b-row class="input-field">
           <b-col sm="3"><label for="form-fio">ФИО</label></b-col>
           <b-col sm="9">
-            <b-form-input type="text" id="form-fio" @input.native="changeFio" v-model="fio" class="fio-input"/>
+            <b-form-input type="text" id="form-fio" @input.native="changeFio" v-model="fio" :disabled="isFioInputDisable" class="fio-input"/>
             <span class="fio-placeholder" @click="focusFio">{{ fioPlaceholder }}</span>
             <span class="fio-overflow-text" @click="focusFio">{{ fio }}</span>
           </b-col>
@@ -24,7 +24,7 @@
         <!-- TEL -->
         <b-row class="input-field">
           <b-col sm="3"><label for="form-phone">Телефон</label></b-col>
-          <b-col sm="9"><b-form-input type="tel" id="form-phone" v-model="phone" placeholder=""/>
+          <b-col sm="9"><b-form-input type="tel" id="form-phone" v-model="phone" :disabled="isPhoneInputDisable" placeholder=""/>
           </b-col>
         </b-row>
 
@@ -43,6 +43,14 @@ export default {
       email: '',
       phone: '',
       fioPlaceholder: FIO_PLACEHOLDER.join(' '),
+
+      isEmailValid: "null",
+
+      isFioInputDisable: true,
+      isPhoneInputDisable: true,
+
+      errors: [],
+
       changeFio: function (e) {
         this.$nextTick(function () {
           let fioInputWords = this.fio.split(' ').filter(word => !!word)
@@ -52,7 +60,22 @@ export default {
 
       focusFio: function (e) {
         e.target.parentElement.firstChild.focus()
-      }
+      },
+
+      validEmail: function (email) {
+        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(email);
+      },
+
+      checkEmail: function () {
+        if(this.validEmail(this.email)) {
+          // console.log('api call')
+        }
+      },
+
+      onblurEmail: function () {
+        this.isEmailValid = this.email ? !!this.validEmail(this.email) : "null"
+      },
     }
   }
 }
