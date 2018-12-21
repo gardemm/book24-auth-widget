@@ -51,7 +51,7 @@ export default {
       },
 
       focusFio: function (e) {
-        console.log('focus', e.target.parentElement.firstChild.focus())
+        e.target.parentElement.firstChild.focus()
       }
     }
   }
