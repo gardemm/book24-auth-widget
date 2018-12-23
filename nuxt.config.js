@@ -1,12 +1,7 @@
 module.exports = {
   modules: [
     'bootstrap-vue/nuxt',
-    '@nuxtjs/axios',
   ],
-
-  axios: {
-    baseUrl: 'https://demo.book24.ru/api/v1',
-  },
 
   vendor: [
     'vue',
